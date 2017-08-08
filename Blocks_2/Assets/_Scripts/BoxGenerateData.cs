@@ -7,8 +7,8 @@ public class BoxGenerateData : MonoBehaviour {
     [SerializeField] private int sizeHeight;
     [SerializeField] private int sizeWeight;
     [SerializeField] private int levelLong;
+    [SerializeField] private float stepBetweenBoxes = 1.1f;
 
-    private float stepBetweenBoxes = 1.1f;
     private float levelStartPosZ = 0;
     private float levelStepZ = 5f;
     private GameObject parent;
@@ -19,6 +19,7 @@ public class BoxGenerateData : MonoBehaviour {
     {
         GlobalParameters.Instance.LevelHeight = sizeHeight;
         GlobalParameters.Instance.LevelWeight = sizeWeight;
+        GlobalParameters.Instance.MoveStep = stepBetweenBoxes;
 
         createParentForBoxes();
         generateBox();
@@ -42,12 +43,15 @@ public class BoxGenerateData : MonoBehaviour {
                             i * stepBetweenBoxes - ((sizeHeight - 1) * stepBetweenBoxes) / 2 };
                         BoxCoordinates.Add(coord);
                     }
-            instantiateBox();
+            if (l == levelLong - 1)
+                DetRangeXY(BoxCoordinates);
+                instantiateBox();
         }
     }
 
     private void instantiateBox()
     {
+
         foreach (float[] b in BoxCoordinates)
         {
             GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -67,8 +71,28 @@ public class BoxGenerateData : MonoBehaviour {
     private void instantiatePlayer()
     {
         GameObject player = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        player.AddComponent<Rigidbody>();
         player.AddComponent<PlayerController>();
         player.name = "Player";
+    }
+
+    private void DetRangeXY(List<float[]> coord)
+    {
+        float minX = 0;
+        float maxX = 0;
+        float minY = 0;
+        float maxY = 0;
+
+        foreach (float[] xy in coord)
+        {
+            if (xy[0] < minX) minX = xy[0];
+            if (xy[0] > maxX) maxX = xy[0];
+            if (xy[1] < minY) minY = xy[1];
+            if (xy[1] > maxY) maxY = xy[1];
+        }
+
+        GlobalParameters.Instance.RangeX = new float[] { minX, maxX };
+        GlobalParameters.Instance.RangeY = new float[] { minY, maxY };
     }
 
 }

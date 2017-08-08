@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class GlobalParameters : MonoBehaviour
 {
-    private int levelHeight;
-    private int levelWeight;
+    private int levelHeight, levelWeight;
+    private float[] rangeX, rangeY;
+    private float moveStep;
 
     public static GlobalParameters Instance { get; private set; }
 
@@ -31,4 +32,21 @@ public class GlobalParameters : MonoBehaviour
         set { levelWeight = value; }
     }
 
+    public float[] RangeX
+    {
+        get { return rangeX; }
+        set { rangeX = value; }
+    }
+
+    public float[] RangeY
+    {
+        get { return rangeY; }
+        set { rangeY = value; }
+    }
+
+    public float MoveStep
+    {
+        get { return moveStep; }
+        set { moveStep = value; }
+    }
 }
