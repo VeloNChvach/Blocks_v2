@@ -71,7 +71,7 @@ public class BoxGenerateData : MonoBehaviour {
     private void instantiatePlayer()
     {
         GameObject player = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        player.AddComponent<Rigidbody>();
+        //player.AddComponent<Rigidbody>();
         player.AddComponent<PlayerController>();
         player.name = "Player";
     }
